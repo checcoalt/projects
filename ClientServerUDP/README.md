@@ -1,10 +1,10 @@
 # Client Server con UDP socket e Proxy-Skeleton pattern 🇮🇹
-1. **`Client.java`**
+## **`Client.java`**
     1. Implementa solo la funzione `**main()**`:
         1. Crea un **riferimento** al **`CounterProxy`** → è l’unica classe con cui comunica.
         2. Crea una **variabile d’appoggio** per la ricezione delle risposte dal Proxy.
         3. Invoca i **metodi** disponibili sul Proxy, il quale implementa la stessa interfaccia **`ICounter`** del server.
-2. **`CounterProxy.java`**
+## **`CounterProxy.java`**
     1. Ha un attributo **`DatagramSocket`** che utilizza per mandare richieste al server (in realtà al `CounterSkeleton`).
     2. Implementa un comportamento da seguire per ogni metodo dell’interfaccia **`ICounter`**, che però **non è la vera realizzazione di quella funzionalità** (es. sum() non somma veramente).
         1. Viene composto un messaggio del tipo `metodo**#**parmetro1**#**...**#**parametroN`.
@@ -34,10 +34,10 @@
         
         </aside>
         
-3. `**ICounter.java**`
+## `**ICounter.java**`
     1. Interfaccia nota a tutte le classi che gestiscono la comunicazione.
     2. Definisce i metodi per operare sull’oggetto remoto “*contatore*”.
-4. `**CounterSkeleton.java**`
+## `**CounterSkeleton.java**`
     1. Conosce i metodi dell’interfaccia **`ICounter`**, ma essendo **`abstract`**, non è necessario che ne ridefinisca i comportamenti (lo farà la sottoclasse).
         
         <aside>
@@ -49,11 +49,11 @@
         1. crea una **`DatagramSocket`**;
         2. si mette in **ascolto all’infinito sullo stesso porto** su cui comunica il **CounterProxy**, implementando un meccanismo di **receive analogo** a quello del CounterProxy**;**
         3. alla **ricezione**, avvia un **thread** a cui certamente dovrà fornire `socket` e `request`, ma anche l’oggetto della sottoclasse che ha lanciato il metodo (`this`).
-5. **`CounterImpl.java`**
+## **`CounterImpl.java`**
     1. **Eredita** dalla classe `CounterSkeleton`, quindi ha a disposizione tutti i meccanismi di **comunicazione** con il lato client.
     2. Ha un attributo privato che rappresenta il ***contatore***.
     3. **Implementa le funzionalità vere e proprie offerte dal server**., dunque i reali comportamenti delle funzioni definite dall’interfaccia **`ICounter`** sull’oggetto remoto *contatore*.
-6. `**CounterWorker.java**`
+## `**CounterWorker.java**`
     1. Rappresenta il Thread generato dallo Skeleton all’arrivo di ogni richiesta.
         1. Eredita dalla classe **`Thread`**, dunque deve implementare il metodo **`run()`**.
     2. Riceve in ingresso come parametri una `socket`, un `**DatagramPacket** request` e un’istanza di una sottoclasse di `**CounterSkeleton`** (in questo caso `**CounterImpl**`), in quanto la prima è astratta.
@@ -90,8 +90,7 @@
                 e.printStackTrace();
             }
             ```
-            
-7. `**Server.java**`
+## `**Server.java**`
     1. Grazie all’architettura del progetto, deve limitarsi a
         1. creare un’istanza di `**CounterImpl**`, che è per definizione un `CounterSkeleton`;
         2. eseguire il metodo **`runSkeleton()`**.
