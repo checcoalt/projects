@@ -1,23 +1,4 @@
-## Getting Started
-
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
-
-## Folder Structure
-
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
-
-# Spiegazione
+# Client Server with UDP Socket and Proxy-Skeleton pattern - Project Explaination
 1. **`Client.java`**
     1. Implementa solo la funzione `**main()**`:
         1. Crea un **riferimento** al **`CounterProxy`** → è l’unica classe con cui comunica.
@@ -31,7 +12,7 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
         2. Tale messaggio viene incapsulato in un `**DatagramPacket** request`, che prevede i campi:
             - bytes → message.getBytes()
             - length → message.getBytes().length
-            - host → InetAddress.getLocalHost() o altri metodi
+            - host → InetAddress.getLocalHost() o altri metodi della classe `**InetAddress**`.
             - port → (hardcoded, es. 9000)
         3. Il messaggio viene inviato sulla socket tramite `socket.**send**(request)`.
         4. Viene creato un **buffer a lunghezza definita** per la **ricezione della risposta**, e fornito come parametro ad un `**DatagramPacket** reply` in ricezione.
@@ -53,7 +34,10 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
         
         </aside>
         
-3. `**CounterSkeleton.java**`
+3. `**ICounter.java**`
+    1. Interfaccia nota a tutte le classi che gestiscono la comunicazione.
+    2. Definisce i metodi per operare sull’oggetto remoto “*contatore*”.
+4. `**CounterSkeleton.java**`
     1. Conosce i metodi dell’interfaccia **`ICounter`**, ma essendo **`abstract`**, non è necessario che ne ridefinisca i comportamenti (lo farà la sottoclasse).
         
         <aside>
@@ -65,3 +49,49 @@ The `JAVA PROJECTS` view allows you to manage your dependencies. More details ca
         1. crea una **`DatagramSocket`**;
         2. si mette in **ascolto all’infinito sullo stesso porto** su cui comunica il **CounterProxy**, implementando un meccanismo di **receive analogo** a quello del CounterProxy**;**
         3. alla **ricezione**, avvia un **thread** a cui certamente dovrà fornire `socket` e `request`, ma anche l’oggetto della sottoclasse che ha lanciato il metodo (`this`).
+5. **`CounterImpl.java`**
+    1. **Eredita** dalla classe `CounterSkeleton`, quindi ha a disposizione tutti i meccanismi di **comunicazione** con il lato client.
+    2. Ha un attributo privato che rappresenta il ***contatore***.
+    3. **Implementa le funzionalità vere e proprie offerte dal server**., dunque i reali comportamenti delle funzioni definite dall’interfaccia **`ICounter`** sull’oggetto remoto *contatore*.
+6. `**CounterWorker.java**`
+    1. Rappresenta il Thread generato dallo Skeleton all’arrivo di ogni richiesta.
+        1. Eredita dalla classe **`Thread`**, dunque deve implementare il metodo **`run()`**.
+    2. Riceve in ingresso come parametri una `socket`, un `**DatagramPacket** request` e un’istanza di una sottoclasse di `**CounterSkeleton`** (in questo caso `**CounterImpl**`), in quanto la prima è astratta.
+    3. Nel metodo **`run()`**:
+        1. divide in Token il messaggio di richiesta basandosi sulla convenzione definita (**`#`**);
+            
+            ```java
+            StringTokenizer messageTokens = new StringTokenizer(message, "#");
+            String method = messageTokens.nextToken();
+            ```
+            
+        2. **valuta il primo Token**, che rappresenta il **metodo**, e a seconda di esso definisce dei comportamenti da seguire, come la valutazione dei token successivi;
+        3. esegue l’**up-call**, cioè la chiamata a funzione alla sua istanza di Skeleton (la `CounterImpl` ricevuta come terzo parametro), che è in grado di eseguire sul server il metodo vero e proprio;
+            
+            ```java
+            // up-call (restituisce un intero)
+            int res = skeleton.increment();
+            ```
+            
+        4. implementa un meccanismo di **generazione ed invio della risposta** al `CounterProxy`, includendo eventualmente il valore restituito dal metodo chiamato sul server.
+            
+            ```java
+            // Creazione del messaggio/pacchetto di risposta
+            String replyMessage = Integer.toString(res);
+            DatagramPacket reply= new DatagramPacket(replyMessage.getBytes(),
+                                                     replyMessage.getBytes().length,
+                                                     request.getAddress(),
+                                                     request.getPort());
+            
+            // Invio del messaggio/pacchetto di risposta
+            try {
+                socket.send(reply);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            ```
+            
+7. `**Server.java**`
+    1. Grazie all’architettura del progetto, deve limitarsi a
+        1. creare un’istanza di `**CounterImpl**`, che è per definizione un `CounterSkeleton`;
+        2. eseguire il metodo **`runSkeleton()`**.
