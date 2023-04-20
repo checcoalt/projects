@@ -41,7 +41,7 @@ Implementa solo la funzione **`main()`**:<br/>
 1. Conosce i metodi dell’interfaccia **`ICounter`**, ma essendo **`abstract`**, non è necessario che ne ridefinisca i comportamenti (lo farà la sottoclasse).
 
     <aside>
-    💡 Si tratta di uno **Skeleton per ereditarietà**.
+    💡 Si tratta di uno <b>Skeleton per ereditarietà</b>.
 
     </aside>
 
@@ -92,5 +92,5 @@ Implementa solo la funzione **`main()`**:<br/>
         ```
 ## **`Server.java`**
 Grazie all’architettura del progetto, deve limitarsi a
-1. creare un’istanza di `**CounterImpl**`, che è per definizione un `CounterSkeleton`;
+1. creare un’istanza di **`CounterImpl`**, che è per definizione un `CounterSkeleton`;
 2. eseguire il metodo **`runSkeleton()`**.
