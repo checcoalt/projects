@@ -123,12 +123,11 @@ Implements only the **`main()`** function:
         - If the method is not void, but returns a type, the received packet must be parsed to read the returned value.
         - To do this, you can use the methods of the Java Wrapper classes.
         
-        ```
+        ```java
         // Parsing the response to read the value returned by the method
         String replyMessage = new String(reply.getData(), 0, reply.getLength());
         x = Integer.valueOf(replyMessage).intValue();
         // [Generic type]     --(Integer.valueof())-->     [Integer]    --(.intvalue())-->       [int]
-        
         ```
         
     
@@ -171,16 +170,15 @@ Implements only the **`main()`** function:
 3. In the **`run()`** method:
     1. divides the request message into Tokens based on the defined convention (**`#`**);
         
-        ```
+        ```java
         StringTokenizer messageTokens = new StringTokenizer(message, "#");
         String method = messageTokens.nextToken();
-        
         ```
         
     2. **evaluates the first Token**, which represents the **method**, and depending on it, defines behaviors to follow, such as evaluating the subsequent tokens;
     3. performs the **up-call**, i.e., the function call to its Skeleton instance (the `CounterImpl` received as the third parameter), which is able to execute the actual method on the server;
         
-        ```
+        ```java
         // up-call (returns an integer)
         int res = skeleton.increment();
         
@@ -188,7 +186,7 @@ Implements only the **`main()`** function:
         
     4. implements a mechanism of **generation and sending of the response** to the `CounterProxy`, possibly including the value returned by the method called on the server.
         
-        ```
+        ```java
         // Creation of the reply message/packet
         String replyMessage = Integer.toString(res);
         DatagramPacket reply= new DatagramPacket(replyMessage.getBytes(),
