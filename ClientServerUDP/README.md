@@ -147,7 +147,7 @@ Implements only the **`main()`** function:
 1. Knows the methods of the **`ICounter`** interface, but being **`abstract`**, it is not necessary to redefine their behaviors (this will be done by the subclass).
     
     <aside>
-    💡 This is an <b>Skeleton for inheritance</b>.
+    💡 This is a <b>Skeleton for inheritance</b>.
     
     </aside>
     
