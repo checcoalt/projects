@@ -1,4 +1,4 @@
-# Client Server with UDP Socket and Proxy-Skeleton pattern - Project Explaination
+# Client Server con UDP socket e Proxy-Skeleton pattern 🇮🇹
 1. **`Client.java`**
     1. Implementa solo la funzione `**main()**`:
         1. Crea un **riferimento** al **`CounterProxy`** → è l’unica classe con cui comunica.
