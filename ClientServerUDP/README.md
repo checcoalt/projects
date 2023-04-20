@@ -38,17 +38,17 @@ Implementa solo la funzione **`main()`**:<br/>
 1. Interfaccia nota a tutte le classi che gestiscono la comunicazione.
 2. Definisce i metodi per operare sull’oggetto remoto “*contatore*”.
 ## **`CounterSkeleton.java`**
-    1. Conosce i metodi dell’interfaccia **`ICounter`**, ma essendo **`abstract`**, non è necessario che ne ridefinisca i comportamenti (lo farà la sottoclasse).
-        
-        <aside>
-        💡 Si tratta di uno **Skeleton per ereditarietà**.
-        
-        </aside>
-        
-    2. Ha un metodo **`runSkeleton()`** in cui
-        1. crea una **`DatagramSocket`**;
-        2. si mette in **ascolto all’infinito sullo stesso porto** su cui comunica il **CounterProxy**, implementando un meccanismo di **receive analogo** a quello del CounterProxy;
-        3. alla **ricezione**, avvia un **thread** a cui certamente dovrà fornire `socket` e `request`, ma anche l’oggetto della sottoclasse che ha lanciato il metodo (`this`).
+1. Conosce i metodi dell’interfaccia **`ICounter`**, ma essendo **`abstract`**, non è necessario che ne ridefinisca i comportamenti (lo farà la sottoclasse).
+
+    <aside>
+    💡 Si tratta di uno **Skeleton per ereditarietà**.
+
+    </aside>
+
+2. Ha un metodo **`runSkeleton()`** in cui
+    1. crea una **`DatagramSocket`**;
+    2. si mette in **ascolto all’infinito sullo stesso porto** su cui comunica il **CounterProxy**, implementando un meccanismo di **receive analogo** a quello del CounterProxy;
+    3. alla **ricezione**, avvia un **thread** a cui certamente dovrà fornire `socket` e `request`, ma anche l’oggetto della sottoclasse che ha lanciato il metodo (`this`).
 ## **`CounterImpl.java`**
 1. **Eredita** dalla classe `CounterSkeleton`, quindi ha a disposizione tutti i meccanismi di **comunicazione** con il lato client.
 2. Ha un attributo privato che rappresenta il ***contatore***.
@@ -56,7 +56,7 @@ Implementa solo la funzione **`main()`**:<br/>
 ## **`CounterWorker.java`**
 1. Rappresenta il Thread generato dallo Skeleton all’arrivo di ogni richiesta.
     1. Eredita dalla classe **`Thread`**, dunque deve implementare il metodo **`run()`**.
-2. Riceve in ingresso come parametri una `socket`, un `**DatagramPacket** request` e un’istanza di una sottoclasse di `**CounterSkeleton`** (in questo caso `**CounterImpl**`), in quanto la prima è astratta.
+2. Riceve in ingresso come parametri una `socket`, un `DatagramPacket request` e un’istanza di una sottoclasse di **`CounterSkeleton`** (in questo caso **`CounterImpl`**), in quanto la prima è astratta.
 3. Nel metodo **`run()`**:
     1. divide in Token il messaggio di richiesta basandosi sulla convenzione definita (**`#`**);
 
