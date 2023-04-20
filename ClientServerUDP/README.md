@@ -24,8 +24,7 @@ Implementa solo la funzione **`main()`**:<br/>
         // Parsing della risposta per leggere il valore restituito dal metodo
         String replyMessage = new String(reply.getData(), 0, reply.getLength());
         x = Integer.valueOf(replyMessage).intValue();
-        // [Tipo generico] --(Integer.valueof())--> [Integer]
-        //                 --(.intvalue())-->       [int]
+        // [Tipo generico]     --(Integer.valueof())-->     [Integer]    --(.intvalue())-->       [int]
         ```
 
 
