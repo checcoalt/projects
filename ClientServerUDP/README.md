@@ -1,4 +1,4 @@
-# Client Server con UDP socket e Proxy-Skeleton pattern 🇮🇹
+# Client-Server con UDP socket e Proxy-Skeleton pattern 🇮🇹
 [Class Diagram](ClassDiagram.png)
 ## **`Client.java`**
 Implementa solo la funzione **`main()`**:
@@ -95,7 +95,7 @@ Grazie all’architettura del progetto, deve limitarsi a
 1. creare un’istanza di **`CounterImpl`**, che è per definizione un `CounterSkeleton`;
 2. eseguire il metodo **`runSkeleton()`**.
 
-# Client Server with UDP socket and Proxy-Skeleton pattern 🇺🇸
+# Client-Server with UDP socket and Proxy-Skeleton pattern 🇺🇸
 [Class Diagram](ClassDiagram.png)
 
 ## **`Client.java`**
