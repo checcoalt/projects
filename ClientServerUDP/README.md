@@ -30,7 +30,7 @@ Implementa solo la funzione **`main()`**:<br/>
 
 
     <aside>
-    💡 I sepratori "#" realizzano una <b>convenzione</b> tra il sender e il receiver, e forniscono le <b>regole di parsing</b> che il receiver dovrà implementare per analizzare e comprendere le informazioni contenute nel <b>datagramma UDP</b> ricevuto (come per i file `.csv`).
+    💡 I sepratori <b>#</b> realizzano una <b>convenzione</b> tra il sender e il receiver, e forniscono le <b>regole di parsing</b> che il receiver dovrà implementare per analizzare e comprendere le informazioni contenute nel <b>datagramma UDP</b> ricevuto (come per i file <b>.csv</b>).
 
     </aside>
         
