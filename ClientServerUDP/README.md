@@ -1,38 +1,38 @@
 # Client Server con UDP socket e Proxy-Skeleton pattern 🇮🇹
 ## **`Client.java`**
-    1. Implementa solo la funzione `**main()**`:
-        1. Crea un **riferimento** al **`CounterProxy`** → è l’unica classe con cui comunica.
-        2. Crea una **variabile d’appoggio** per la ricezione delle risposte dal Proxy.
-        3. Invoca i **metodi** disponibili sul Proxy, il quale implementa la stessa interfaccia **`ICounter`** del server.
+Implementa solo la funzione `**main()**`:
+    1. Crea un **riferimento** al **`CounterProxy`** → è l’unica classe con cui comunica.
+    2. Crea una **variabile d’appoggio** per la ricezione delle risposte dal Proxy.
+    3. Invoca i **metodi** disponibili sul Proxy, il quale implementa la stessa interfaccia **`ICounter`** del server.
 ## **`CounterProxy.java`**
-    1. Ha un attributo **`DatagramSocket`** che utilizza per mandare richieste al server (in realtà al `CounterSkeleton`).
-    2. Implementa un comportamento da seguire per ogni metodo dell’interfaccia **`ICounter`**, che però **non è la vera realizzazione di quella funzionalità** (es. sum() non somma veramente).
-        1. Viene composto un messaggio del tipo `metodo**#**parmetro1**#**...**#**parametroN`.
-            - Il metodo ed i parametri variano a seconda del metodo di **ICounter** che si sta implementando.
-        2. Tale messaggio viene incapsulato in un `**DatagramPacket** request`, che prevede i campi:
-            - bytes → message.getBytes()
-            - length → message.getBytes().length
-            - host → InetAddress.getLocalHost() o altri metodi della classe `**InetAddress**`.
-            - port → (hardcoded, es. 9000)
-        3. Il messaggio viene inviato sulla socket tramite `socket.**send**(request)`.
-        4. Viene creato un **buffer a lunghezza definita** per la **ricezione della risposta**, e fornito come parametro ad un `**DatagramPacket** reply` in ricezione.
-        5. Attesa della risposta sulla socket tramite `socket.**receive**(reply)`.
-            - Se il metodo non è void, ma restituisce un tipo, va gestito il parsing del pacchetto ricevuto per la lettura del valore restituito.
-            - A tale scopo si possono usare i metodi della classi Wrapper fornite da Java.
-            
-            ```java
-            // Parsing della risposta per leggere il valore restituito dal metodo
-            String replyMessage = new String(reply.getData(), 0, reply.getLength());
-            x = Integer.valueOf(replyMessage).intValue();
-            // [Tipo generico] --(Integer.valueof())--> [Integer]
-            //                 --(.intvalue())-->       [int]
-            ```
-            
-        
-        <aside>
-        💡 I sepratori **`#`** realizzano una **convenzione** tra il sender e il receiver, e forniscono le **regole di parsing** che il receiver dovrà implementare per analizzare e comprendere le informazioni contenute nel **datagramma UDP** ricevuto (come per i file `.csv`).
-        
-        </aside>
+1. Ha un attributo **`DatagramSocket`** che utilizza per mandare richieste al server (in realtà al `CounterSkeleton`).
+2. Implementa un comportamento da seguire per ogni metodo dell’interfaccia **`ICounter`**, che però **non è la vera realizzazione di quella funzionalità** (es. sum() non somma veramente).
+    1. Viene composto un messaggio del tipo `metodo**#**parmetro1**#**...**#**parametroN`.
+        - Il metodo ed i parametri variano a seconda del metodo di **ICounter** che si sta implementando.
+    2. Tale messaggio viene incapsulato in un `**DatagramPacket** request`, che prevede i campi:
+        - bytes → message.getBytes()
+        - length → message.getBytes().length
+        - host → InetAddress.getLocalHost() o altri metodi della classe `**InetAddress**`.
+        - port → (hardcoded, es. 9000)
+    3. Il messaggio viene inviato sulla socket tramite `socket.**send**(request)`.
+    4. Viene creato un **buffer a lunghezza definita** per la **ricezione della risposta**, e fornito come parametro ad un `**DatagramPacket** reply` in ricezione.
+    5. Attesa della risposta sulla socket tramite `socket.**receive**(reply)`.
+        - Se il metodo non è void, ma restituisce un tipo, va gestito il parsing del pacchetto ricevuto per la lettura del valore restituito.
+        - A tale scopo si possono usare i metodi della classi Wrapper fornite da Java.
+
+        ```java
+        // Parsing della risposta per leggere il valore restituito dal metodo
+        String replyMessage = new String(reply.getData(), 0, reply.getLength());
+        x = Integer.valueOf(replyMessage).intValue();
+        // [Tipo generico] --(Integer.valueof())--> [Integer]
+        //                 --(.intvalue())-->       [int]
+        ```
+
+
+    <aside>
+    💡 I sepratori **`#`** realizzano una **convenzione** tra il sender e il receiver, e forniscono le **regole di parsing** che il receiver dovrà implementare per analizzare e comprendere le informazioni contenute nel **datagramma UDP** ricevuto (come per i file `.csv`).
+
+    </aside>
         
 ## `**ICounter.java**`
     1. Interfaccia nota a tutte le classi che gestiscono la comunicazione.
