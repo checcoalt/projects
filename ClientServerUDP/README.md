@@ -6,17 +6,17 @@ Implementa solo la funzione **`main()`**:<br/>
     3. Invoca i **metodi** disponibili sul Proxy, il quale implementa la stessa interfaccia **`ICounter`** del server.
 ## **`CounterProxy.java`**
 1. Ha un attributo **`DatagramSocket`** che utilizza per mandare richieste al server (in realtà al `CounterSkeleton`).
-2. Implementa un comportamento da seguire per ogni metodo dell’interfaccia **`ICounter`**, che però **non è la vera realizzazione di quella funzionalità** (es. sum() non somma veramente).
-    1. Viene composto un messaggio del tipo `metodo**#**parmetro1**#**...**#**parametroN`.
+2. Implementa un comportamento da seguire per ogni metodo dell’interfaccia **`ICounter`**, che però **non è la vera realizzazione di quella funzionalità** (es. sum() non effettua davvero la somma sul contatore remoto).
+    1. Viene composto un messaggio del tipo `metodo#parmetro1#...#parametroN`.
         - Il metodo ed i parametri variano a seconda del metodo di **ICounter** che si sta implementando.
-    2. Tale messaggio viene incapsulato in un `**DatagramPacket** request`, che prevede i campi:
+    2. Tale messaggio viene incapsulato in un `DatagramPacket request`, che prevede i campi:
         - bytes → message.getBytes()
         - length → message.getBytes().length
         - host → InetAddress.getLocalHost() o altri metodi della classe `**InetAddress**`.
         - port → (hardcoded, es. 9000)
-    3. Il messaggio viene inviato sulla socket tramite `socket.**send**(request)`.
-    4. Viene creato un **buffer a lunghezza definita** per la **ricezione della risposta**, e fornito come parametro ad un `**DatagramPacket** reply` in ricezione.
-    5. Attesa della risposta sulla socket tramite `socket.**receive**(reply)`.
+    3. Il messaggio viene inviato sulla socket tramite `socket.send(request)`.
+    4. Viene creato un **buffer a lunghezza definita** per la **ricezione della risposta**, e fornito come parametro ad un `DatagramPacket reply` in ricezione.
+    5. Attesa della risposta sulla socket tramite `socket.receive(reply)`.
         - Se il metodo non è void, ma restituisce un tipo, va gestito il parsing del pacchetto ricevuto per la lettura del valore restituito.
         - A tale scopo si possono usare i metodi della classi Wrapper fornite da Java.
 
@@ -30,7 +30,7 @@ Implementa solo la funzione **`main()`**:<br/>
 
 
     <aside>
-    💡 I sepratori **`#`** realizzano una **convenzione** tra il sender e il receiver, e forniscono le **regole di parsing** che il receiver dovrà implementare per analizzare e comprendere le informazioni contenute nel **datagramma UDP** ricevuto (come per i file `.csv`).
+    💡 I sepratori <b>`#`</b> realizzano una <b>convenzione</b> tra il sender e il receiver, e forniscono le <b>regole di parsing</b> che il receiver dovrà implementare per analizzare e comprendere le informazioni contenute nel <b>datagramma UDP</b> ricevuto (come per i file <i>.csv</i>).
 
     </aside>
         
