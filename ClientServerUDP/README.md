@@ -1,8 +1,8 @@
 # Client Server con UDP socket e Proxy-Skeleton pattern 🇮🇹
 ## **`Client.java`**
-Implementa solo la funzione `**main()**`:
-    1. Crea un **riferimento** al **`CounterProxy`** → è l’unica classe con cui comunica.
-    2. Crea una **variabile d’appoggio** per la ricezione delle risposte dal Proxy.
+Implementa solo la funzione **`main()`**:<br/>
+    1. Crea un **riferimento** al **`CounterProxy`** → è l’unica classe con cui comunica.<br/>
+    2. Crea una **variabile d’appoggio** per la ricezione delle risposte dal Proxy.<br/>
     3. Invoca i **metodi** disponibili sul Proxy, il quale implementa la stessa interfaccia **`ICounter`** del server.
 ## **`CounterProxy.java`**
 1. Ha un attributo **`DatagramSocket`** che utilizza per mandare richieste al server (in realtà al `CounterSkeleton`).
