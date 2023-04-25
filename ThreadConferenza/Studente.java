@@ -63,14 +63,14 @@ public class Studente extends Thread {
             
                 discorso = this.nome;
                 System.out.println("\n" + discorso + " sta parlando...");
-                System.out.println(this.nome + " ha terminato il suo turno.\n");
             
             }
             else {
                 System.out.println("\nUffa! Sono rimasto solo...");
-                System.out.println(this.nome + " ha terminato il suo turno.\n");
             }
 
+            // Termina il turno
+            System.out.println(this.nome + " ha terminato il suo turno.\n");
             N_ATTIVI--;                 // questo studente sta andando via
 
             // tutti pronti per venire a leggere
