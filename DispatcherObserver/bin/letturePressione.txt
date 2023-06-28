@@ -1,0 +1,4 @@
+Reading [tipo=pressione, valore=27]
+Reading [tipo=pressione, valore=42]
+Reading [tipo=pressione, valore=42]
+Reading [tipo=pressione, valore=27]
